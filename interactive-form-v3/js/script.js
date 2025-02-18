@@ -1,4 +1,4 @@
-// Select Name Input field and put focus on it
+// Put focus on the name input field
 
 const nameInput = document.querySelector("#name");
 nameInput.focus();
@@ -10,7 +10,7 @@ const jobRoleInput = document.querySelector ("#other-job-role");
 
 jobRoleInput.style.display = 'none';
 
-// If the option "other" is selected in jobRoleSelect, display jobRoleInput
+// Display jobRoleInput only if the option "other" is selected in jobRoleSelect 
 
 jobRoleSelect.addEventListener("change", (e) => {
     if (e.target.value === "other"){
@@ -72,7 +72,7 @@ const payPal = document.querySelector("#paypal");
 const bitcoin = document.querySelector("#bitcoin");
 let shownElement = creditCard;
 
-// CreditCard option as default and hide the others
+// Show creditCard option as default and hide the others
 
 payPal.style.display = 'none';
 bitcoin.style.display = 'none';
@@ -87,41 +87,51 @@ payMethod.addEventListener("change", (e) => {
     newElement.style.display = 'block';
     shownElement = newElement
 });
-
-const emailInput = document.querySelector("#email");
-const cardNumberInput = document.querySelector("#cc-num");
-const zipCodeInput = document.querySelector("#zip");
-const cvvInput = document.querySelector("#cvv");
+const nameLabel = document.querySelector("label[for='name']");
+const emailLabel = document.querySelector("label[for='email']");
+const cardNumberLabel = document.querySelector("label[for='cc-num']");
+const zipCodeLabel = document.querySelector("label[for='zip']");
+const cvvLabel = document.querySelector("label[for='cvv']");
 const form = document.querySelector("form");
 const activitiesCheckboxes = document.querySelectorAll("input[type='checkbox']");
 
-// Validate the input in the field sections before submit
+
+// Validate the input in the field sections and the activity section before submit
 
 const isValidName = () => /^[a-zA-Z\s]+$/.test(nameInput.value);
-const isValidEmail = () => /^[^@]+@[^@]+\.[a-z]+$/i.test(emailInput.value);
-const isValidCardNumber = () => /^\d{13,16}$/.test(cardNumberInput.value);
-const isValidZipCode = () => /^\d{5}$/.test(zipCodeInput.value);
-const isValidCvv = () => /^\d{3}$/.test(cvvInput.value);
+const isValidEmail = () => /^[^@]+@[^@]+\.[a-z]+$/i.test(emailLabel.querySelector('input').value);
+const isValidCardNumber = () => /^\d{13,16}$/.test(cardNumberLabel.querySelector('input').value);
+const isValidZipCode = () => /^\d{5}$/.test(zipCodeLabel.querySelector('input').value);
+const isValidCvv = () => /^\d{3}$/.test(cvvLabel.querySelector('input').value);
+const isValidActivity = () => {
+    for (const checkbox of activitiesCheckboxes) {
+        if (checkbox.checked) {
+            return true;
+        }
+    }
+    return false;
+};
 
 form.addEventListener("submit", (e) => {
-    function validation (inputElement,isValidElement){
-        const label = inputElement.closest('label')
-        if (isValidElement()){
-            label.classList.add("valid");
-            label.classList.remove("not-valid");
-            label.lastElementChild.style.display = 'none';
-        } else {
+    function validation (element,isValidElement){
+        if (!isValidElement()){
             e.preventDefault();
-            label.classList.add("not-valid");
-            label.classList.remove("valid");
-            label.lastElementChild.style.display = 'block';
+            element.classList.add("not-valid");
+            element.classList.remove("valid");
+            element.lastElementChild.style.display = 'block';
+        } else {
+            element.classList.add("valid");
+            element.classList.remove("not-valid");
+            element.lastElementChild.style.display = 'none';
         }
     };
-    validation (nameInput,isValidName);
-    validation (emailInput,isValidEmail);
-    validation (cardNumberInput,isValidCardNumber);
-    validation (zipCodeInput,isValidZipCode);
-    validation (cvvInput,isValidCvv);
+    validation (nameLabel,isValidName);
+    validation (emailLabel,isValidEmail);
+    validation (cardNumberLabel,isValidCardNumber);
+    validation (zipCodeLabel,isValidZipCode);
+    validation (cvvLabel,isValidCvv);
+    validation (activitiesFieldset,isValidActivity);
+
 });
 
 // Add focus and remove focus on the checkboxes in the activities
