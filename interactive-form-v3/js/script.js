@@ -87,6 +87,7 @@ payMethod.addEventListener("change", (e) => {
     newElement.style.display = 'block';
     shownElement = newElement
 });
+
 const nameLabel = document.querySelector("label[for='name']");
 const emailLabel = document.querySelector("label[for='email']");
 const cardNumberLabel = document.querySelector("label[for='cc-num']");
@@ -125,13 +126,15 @@ form.addEventListener("submit", (e) => {
             element.lastElementChild.style.display = 'none';
         }
     };
+
     validation (nameLabel,isValidName);
     validation (emailLabel,isValidEmail);
-    validation (cardNumberLabel,isValidCardNumber);
-    validation (zipCodeLabel,isValidZipCode);
-    validation (cvvLabel,isValidCvv);
     validation (activitiesFieldset,isValidActivity);
-
+    if (shownElement === creditCard) {
+        validation (cardNumberLabel,isValidCardNumber);
+        validation (zipCodeLabel,isValidZipCode);
+        validation (cvvLabel,isValidCvv);
+    }
 });
 
 // Add focus and remove focus on the checkboxes in the activities
